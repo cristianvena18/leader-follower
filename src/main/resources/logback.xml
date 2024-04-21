@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<timestamp key="DATE" datePattern="yyyyMMdd"/>
+	<property resource="application.properties"/>
+
+	<!-- appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender" >
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>
+		</layout>
+	< /appender -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+			<providers>
+				<pattern>
+					<pattern>
+						{
+						"date": "%d",
+						"thread": "%thread",
+						"level": "%-5level",
+						"class": "%logger{36}",
+						"data": "%msg",
+						"service": "${service.name}",
+						"serviceName": "${service.name}",
+						"serviceVersion": "${service.version}",
+						"environment": "${ENV}"
+						}
+					</pattern>
+				</pattern>
+				<arguments/>
+			</providers>
+		</encoder>
+	</appender>
+
+	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+		<file>${log.path}/log-${service.name}-${DATE}.log</file>
+		<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+			<providers>
+				<pattern>
+					<pattern>
+						{
+						"date": "%d",
+						"thread": "%thread",
+						"level": "%-5level",
+						"class": "%logger{36}",
+						"message": "%msg",
+						"service": "${service.name}",
+						"serviceName": "${service.name}",
+						"serviceVersion": "${service.version}",
+						"environment": "${ENV}"
+						}
+					</pattern>
+				</pattern>
+				<arguments/>
+			</providers>
+		</encoder>
+	</appender>
+
+	<logger name="com.base22" level="TRACE"/>
+
+	<root level="info">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="FILE" />
+	</root>
+</configuration>
