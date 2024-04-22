@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory
 
 private val logger = LoggerFactory.getLogger(UnirestUtils::class.java)
 
-val aux_number_of_retries = System.getenv("NUMBER_OF_RETRIES")?:System.getProperty("NUMBER_OF_RETRIES")?:"5"
+val aux_number_of_retries = System.getenv("NUMBER_OF_RETRIES")?:System.getProperty("NUMBER_OF_RETRIES")?:"1"
 val NUMBER_OF_RETRIES:Int = aux_number_of_retries.toInt()
 
 class UnirestUtils {
@@ -27,7 +27,7 @@ class UnirestUtils {
 
     fun get (
         uri: String,
-        headers: Map<String, String>,
+        headers: Map<String, String> = mapOf(),
     ): HttpResponse<JsonNode> {
         return request(METHOD_GET,  uri, headers, mapOf())
     }

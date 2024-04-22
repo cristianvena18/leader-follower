@@ -1,3 +1,3 @@
 package api.requests
 
-data class Concourse(val number: Int)
+data class Concourse(val number: Int, val force: Boolean)

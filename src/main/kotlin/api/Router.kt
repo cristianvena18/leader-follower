@@ -1,15 +1,13 @@
+package api
+
 import api.controllers.LeaderElectorController
 import infra.marshallers.DefaultMarshaller
 import infra.webservice.RouterApplication
 import spark.Spark.*
-import org.slf4j.LoggerFactory
-
-private val logger = LoggerFactory.getLogger(Router::class.java)
 
 class Router (
     private val defaultMarshaller: DefaultMarshaller = DefaultMarshaller(),
     private val leaderElectorController: LeaderElectorController = LeaderElectorController()
-
 ) : RouterApplication() {
 
     override fun routes() {
@@ -24,13 +22,12 @@ class Router (
 
         path("/followers") {
             post("/register", leaderElectorController.registerFollower, defaultMarshaller)
+            post("/report", leaderElectorController.registerFollower, defaultMarshaller)
         }
 
-        /*path ("/qr-requests") {
-            post("", qrRequestsController.createQrRequest, defaultMarshaller)
-            delete("/:qrReqId", qrRequestsController.deleteQrRequest, defaultMarshaller)
-            get("/:qrReqId", qrRequestsController.getQrRequestById, defaultMarshaller)
-        }*/
+        path("/workers") {
+            post("", leaderElectorController.worker, defaultMarshaller)
+        }
     }
 
     override fun mockRoutes() {
